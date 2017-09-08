@@ -83,6 +83,7 @@
     <Compile Include="Assets\Script\GPS.cs" />
     <Compile Include="Assets\Script\LabelCamera.cs" />
     <Compile Include="Assets\Script\LabelCreate.cs" />
+    <Compile Include="Assets\Script\LabelSetting.cs" />
     <Compile Include="Assets\Script\PhoneCamera.cs" />
     <Compile Include="Assets\Script\UpdateGPSText.cs" />
   </ItemGroup>
