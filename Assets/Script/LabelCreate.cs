@@ -7,21 +7,6 @@ using UnityEngine.UI;
 
 public class LabelCreate : MonoBehaviour {
 
-    public class labelNode
-    {
-        public string labelName; // label 的名稱
-        public float labelLatitude; // label 的緯度
-        public float labelLongitude; // label 的經度
-        public double labelDistance; // label 跟人的距離
-
-        public labelNode(string labelName, float labelLatitude, float labelLongitude, double labelDistance)
-        {
-            this.labelName = labelName;
-            this.labelLatitude = labelLatitude;
-            this.labelLongitude = labelLongitude;
-            this.labelDistance = labelDistance;
-        }
-    }
 
     private readonly float maxDistance = 1000f;
 
@@ -40,7 +25,7 @@ public class LabelCreate : MonoBehaviour {
     private GameObject label; // RawImage + Text
     private Text labelDistanceText;
     private GameObject labelParent; // LabelCanvas
-    private List<labelNode> labelList;
+    private Dictionary<string, labelNode> labelList;
 
     public GameObject labelPrefab; // label 模板
 
@@ -50,7 +35,7 @@ public class LabelCreate : MonoBehaviour {
 
     private void Start()
     {
-        labelList = new List<labelNode>();
+        labelList = new Dictionary<string, labelNode>();
         labelParent = GameObject.Find("LabelCanvas");
 
         createLabel();
@@ -69,11 +54,11 @@ public class LabelCreate : MonoBehaviour {
         longitude = GPS.Instance.longitude;
         compass = GPS.Instance.compass;
 
-        foreach (labelNode labelTemp in labelList)
+        foreach (KeyValuePair<string, labelNode> labelTemp in labelList)
         {
-            label = GameObject.Find(labelTemp.labelName);
-            labelLatitude = labelTemp.labelLatitude;
-            labelLongitude = labelTemp.labelLongitude;
+            label = GameObject.Find(labelTemp.Value.labelName);
+            labelLatitude = labelTemp.Value.labelLatitude;
+            labelLongitude = labelTemp.Value.labelLongitude;
 
             // 計算向量長度
             vectorDistance = Mathf.Sqrt(Mathf.Pow(labelLatitude - latitude, 2) + Mathf.Pow(labelLongitude - longitude, 2));
@@ -99,7 +84,7 @@ public class LabelCreate : MonoBehaviour {
             label.transform.rotation = rotation;
 
             // 更新 labelNode 的 labelDistance
-            labelTemp.labelDistance = labelDistance;
+            labelTemp.Value.labelDistance = labelDistance;
 
             // Debug Label Text
             LabelText.text = "labelDistance : " + vectorDistance.ToString() + " ; labelPositionX : " + labelPositionX.ToString() + " ; labelPositionZ : " + labelPositionZ.ToString();
@@ -159,7 +144,7 @@ public class LabelCreate : MonoBehaviour {
             label.transform.rotation = Quaternion.Euler(0f, calAngle(), 0f);
 
             // 把 label 加入 List 中
-            labelList.Add(new labelNode(label.name, labelLatitude, labelLongitude, labelDistance));
+            labelList.Add(label.name, new labelNode(label.name, labelLatitude, labelLongitude, labelDistance));
 
             // Debug Label
             LabelText.text = "labelDistance : " + vectorDistance.ToString() + " ; labelPositionX : " + labelPositionX.ToString() + " ; labelPositionZ : " + labelPositionZ.ToString();

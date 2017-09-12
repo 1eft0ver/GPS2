@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LabelSetting : MonoBehaviour {
@@ -10,38 +11,64 @@ public class LabelSetting : MonoBehaviour {
     private float latitude; // 人所在的緯度
     private float longitude; // 人所在的經度
 
-    private Button button;
-    private Text buttonText;
+    private Dictionary<string, labelNode> labelList;
 
-    //private InputField inputField;
-    //private Text inputFieldText;
+    public Text labelLatitudeText;
+    public Text labelLongitudeText;
+    public Text labelListText;
 
-    public void OnBtn(Text inputFieldText)
+    private void Start()
     {
-        Debug.Log("Click Button LabelSetting");
-        Debug.Log(inputFieldText.text.ToString());
+        labelList = new Dictionary<string, labelNode>();
+    }
 
+    private void Update()
+    {
+        // 取得使用者的經緯度
         latitude = GPS.Instance.latitude;
         longitude = GPS.Instance.longitude;
 
-        button = transform.Find("SettingButton").GetComponent<Button>();
-        buttonText = button.transform.Find("Text").GetComponent<Text>();
+        labelLatitudeText.text = "Latitude: " + latitude;
+        labelLongitudeText.text = "Longitude: " + longitude;
 
-        //inputField = transform.Find("SettingInputField").GetComponent<InputField>();
-        //inputFieldText = inputField.transform.Find("Text").GetComponent<Text>();
+        labelListText.text = string.Empty;
 
-        buttonText.text = inputFieldText.text.ToString() + " " + latitude + " " + longitude;
-        setLabel(buttonText.text);
+        foreach (KeyValuePair<string, labelNode> labelTemp in labelList)
+        {
+            labelListText.text += labelTemp.Value.labelName + " " + labelTemp.Value.labelLatitude + " " + labelTemp.Value.labelLongitude + " " + labelTemp.Value.labelDistance + "\r\n";
+        }
     }
 
-    public void setLabel(string labelString)
+    public void setLabel(Text LabelName)
+    {
+        Debug.Log("Click Button LabelSetting");
+        Debug.Log(LabelName.text.ToString());
+
+        if(LabelName.text == string.Empty)
+        {
+            Debug.Log("Please Input Text");
+            return;
+        }
+
+        // 把 label 加入 List 中
+        if(!labelList.ContainsKey(LabelName.text))
+        {
+            labelList.Add(LabelName.text, new labelNode(LabelName.text, latitude, longitude));
+
+        }
+    }
+
+    public void saveMap()
     {
         string path = Application.persistentDataPath + "/temp.txt";
 
-        StreamWriter writer = new StreamWriter(path, true, Encoding.UTF8);
+        StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8);
 
-        writer.WriteLine(labelString);
+        foreach (KeyValuePair<string, labelNode> labelTemp in labelList)
+        {
+            writer.WriteLine(labelTemp.Value.labelName + " " + labelTemp.Value.labelLatitude + " " + labelTemp.Value.labelLongitude);
+        }
+
         writer.Close();
-
     }
 }

@@ -119,8 +119,7 @@ GameObject:
   - component: {fileID: 238505036}
   - component: {fileID: 238505035}
   - component: {fileID: 238505034}
-  - component: {fileID: 238505033}
-  - component: {fileID: 238505038}
+  - component: {fileID: 238505039}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -128,13 +127,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &238505033
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 238505032}
-  m_Enabled: 1
 --- !u!124 &238505034
 Behaviour:
   m_ObjectHideFlags: 0
@@ -198,7 +190,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &238505038
+--- !u!114 &238505039
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -206,9 +198,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 238505032}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2760365ba1b13047a2fc16cf1952402, type: 3}
+  m_Script: {fileID: 11500000, guid: bd57b7015c31bad438a282c087eaa359, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  latitude: 0
+  longitude: 0
+  timestamp: 0
+  compass: 0
 --- !u!1 &868127794
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,8 +422,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 238505038}
-        m_MethodName: OnBtn
+      - m_Target: {fileID: 1521959171}
+        m_MethodName: uiToAR
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -557,6 +553,7 @@ GameObject:
   - component: {fileID: 1521959169}
   - component: {fileID: 1521959168}
   - component: {fileID: 1521959167}
+  - component: {fileID: 1521959171}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -640,3 +637,14 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1521959171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1521959166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bc06151b27c1749bcdef103dd61d15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

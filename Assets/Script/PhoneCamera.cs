@@ -84,7 +84,8 @@ public class PhoneCamera : MonoBehaviour {
             // Update Gyroscope
             transform.localRotation = gyro.attitude * rotation;
 
-            debugText.text = cam.videoRotationAngle + " ; " + cam.videoVerticallyMirrored + " ; " + gyro.attitude.ToString();
+            if(debugText != null)
+                debugText.text = cam.videoRotationAngle + " ; " + cam.videoVerticallyMirrored + " ; " + gyro.attitude.ToString();
         }
     }
 

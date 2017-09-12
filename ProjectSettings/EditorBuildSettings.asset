@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scene/AR.unity
     guid: e6d581dd14c13a3498f2c462d6603eca
+  - enabled: 1
+    path: Assets/Scene/SetLabel.unity
+    guid: 224c641bdceb5994eadcf92005bb87fa
