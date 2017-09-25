@@ -1,6 +1,11 @@
 # GPS2
 School Project Version 2
 
+# 2017/09/25
+
+* 新增 Google Static Map
+* 程式架構需修改，需要多變數跨 Scene
+
 # 2017/09/08
 
 * 新增 `Button` 和 `InputField`

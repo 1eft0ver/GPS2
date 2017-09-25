@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GoogleStaticMaps : MonoBehaviour {
 
@@ -43,7 +44,9 @@ public class GoogleStaticMaps : MonoBehaviour {
         WWW url = new WWW(googleMapUrl + parameters);
 
         yield return url;
-        GetComponent<CanvasRenderer>().SetTexture(url.texture);
+        //GetComponent<CanvasRenderer>().SetTexture(url.texture);
+
+        GetComponent<RawImage>().texture = url.texture;
 
         Debug.Log(googleMapUrl + parameters);
     }

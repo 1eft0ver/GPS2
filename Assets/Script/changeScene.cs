@@ -24,4 +24,18 @@ public class changeScene : MonoBehaviour {
         Debug.Log("Click Button");
         SceneManager.LoadScene("AR");
     }
+
+    // 從 SetLabel Scene 跳到 Map Scene
+    public void setLabelToMap()
+    {
+        Debug.Log("Click Button");
+        SceneManager.LoadScene("GoogleMap");
+    }
+
+    // 從 SetLabel Scene 跳到 Map Scene
+    public void mapToSetLabel()
+    {
+        Debug.Log("Click Button");
+        SceneManager.LoadScene("SetLabel");
+    }
 }

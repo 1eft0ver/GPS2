@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scene/AR.unity
+- path: Assets/Scene/GoogleMap.unity
   isLoaded: 1
   isActive: 1
