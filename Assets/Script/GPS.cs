@@ -14,9 +14,12 @@ public class GPS : MonoBehaviour {
 
     public float compass; // 跟正北方的角度 (順時針增加)
 
+    //public Dictionary<string, labelNode> labelList;
+
     private void Start()
     {
         Instance = this;
+
         DontDestroyOnLoad(gameObject);
         StartCoroutine(StartLocationService());
     }
