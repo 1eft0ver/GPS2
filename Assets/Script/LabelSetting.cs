@@ -11,7 +11,7 @@ public class LabelSetting : MonoBehaviour {
     private float latitude; // 人所在的緯度
     private float longitude; // 人所在的經度
 
-    private Dictionary<string, labelNode> labelList;
+    private Dictionary<string, LabelNode> labelList;
 
     public Text labelLatitudeText;
     public Text labelLongitudeText;
@@ -19,7 +19,10 @@ public class LabelSetting : MonoBehaviour {
 
     private void Start()
     {
-        labelList = new Dictionary<string, labelNode>();
+        //labelList = new Dictionary<string, LabelNode>();
+
+        // 取得主要的 labelList
+        labelList = LabelMain.Instance.labelList;
     }
 
     private void Update()
@@ -33,9 +36,13 @@ public class LabelSetting : MonoBehaviour {
 
         labelListText.text = string.Empty;
 
-        foreach (KeyValuePair<string, labelNode> labelTemp in labelList)
+        char markerLabelCounter = 'A';
+
+        foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
         {
-            labelListText.text += labelTemp.Value.labelName + " " + labelTemp.Value.labelLatitude + " " + labelTemp.Value.labelLongitude + " " + labelTemp.Value.labelDistance + "\r\n";
+            labelListText.text += (markerLabelCounter + ": " + labelTemp.Value.labelName + " " + labelTemp.Value.labelLatitude + " " + labelTemp.Value.labelLongitude + " " + labelTemp.Value.labelDistance + "\r\n");
+
+            markerLabelCounter++;
         }
     }
 
@@ -53,22 +60,34 @@ public class LabelSetting : MonoBehaviour {
         // 把 label 加入 List 中
         if(!labelList.ContainsKey(LabelName.text))
         {
-            labelList.Add(LabelName.text, new labelNode(LabelName.text, latitude, longitude));
-
+            labelList.Add(LabelName.text, new LabelNode(LabelName.text, latitude, longitude));
         }
     }
 
-    public void saveMap()
+    public void saveMap(Text FileName)
     {
-        string path = Application.persistentDataPath + "/temp.txt";
+        string path = Application.persistentDataPath + "/" + FileName.text + ".txt";
 
         StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8);
 
-        foreach (KeyValuePair<string, labelNode> labelTemp in labelList)
+        foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
         {
             writer.WriteLine(labelTemp.Value.labelName + " " + labelTemp.Value.labelLatitude + " " + labelTemp.Value.labelLongitude);
         }
 
         writer.Close();
+    }
+
+    public void deleteLabel(string buttonName)
+    {
+        GameObject tempButton;
+        tempButton = GameObject.Find(buttonName);
+
+        Destroy(tempButton);
+    }
+
+    public void clearMap()
+    {
+        labelList.Clear();
     }
 }

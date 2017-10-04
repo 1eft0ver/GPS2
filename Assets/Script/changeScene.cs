@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class changeScene : MonoBehaviour {
+public class ChangeScene : MonoBehaviour {
 
     public void uiToAR()
     {

@@ -13,14 +13,24 @@ public class GoogleStaticMaps : MonoBehaviour {
     string scale = "2";
     string maptype = "roadmap";
 
+    private Dictionary<string, LabelNode> labelList;
+
     private void Start()
     {
+        labelList = LabelMain.Instance.labelList;
+
+        char markerLabelCounter = 'A';
+
         markers = new List<GoogleMapMarker>();
 
-        GoogleMapMarker test1 = new GoogleMapMarker("mid", "blue", "V", new GoogleMapLocation(22.6270f, 120.2672f));
-        markers.Add(test1);
-        GoogleMapMarker test2 = new GoogleMapMarker("mid", "red", "T", new GoogleMapLocation(22.62749f, 120.2672f));
-        markers.Add(test2);
+        foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
+        {
+            GoogleMapMarker tempMarker = 
+                new GoogleMapMarker("mid", "blue", markerLabelCounter.ToString(), new GoogleMapLocation(labelTemp.Value.labelLatitude, labelTemp.Value.labelLongitude));
+            markers.Add(tempMarker);
+
+            markerLabelCounter++;
+        }
 
         StartCoroutine(GetGoogleMap());
     }

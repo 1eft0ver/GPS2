@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.1.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -79,12 +81,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Script\BallRotate.cs" />
-    <Compile Include="Assets\Script\changeScene.cs" />
+    <Compile Include="Assets\Script\ChangeScene.cs" />
     <Compile Include="Assets\Script\GoogleStaticMaps.cs" />
     <Compile Include="Assets\Script\GPS.cs" />
     <Compile Include="Assets\Script\LabelCamera.cs" />
     <Compile Include="Assets\Script\LabelCreate.cs" />
-    <Compile Include="Assets\Script\labelNode.cs" />
+    <Compile Include="Assets\Script\LabelMain.cs" />
+    <Compile Include="Assets\Script\LabelNode.cs" />
     <Compile Include="Assets\Script\LabelSetting.cs" />
     <Compile Include="Assets\Script\PhoneCamera.cs" />
     <Compile Include="Assets\Script\UpdateGPSText.cs" />

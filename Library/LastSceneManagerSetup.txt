@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scene/GoogleMap.unity
+- path: Assets/Scene/SetLabel.unity
   isLoaded: 1
   isActive: 1

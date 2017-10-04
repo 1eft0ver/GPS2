@@ -25,26 +25,24 @@ public class LabelCreate : MonoBehaviour {
     private GameObject label; // RawImage + Text
     private Text labelDistanceText;
     private GameObject labelParent; // LabelCanvas
-    private Dictionary<string, labelNode> labelList;
+    private Dictionary<string, LabelNode> labelList;
 
     public GameObject labelPrefab; // label 模板
 
     public Text LabelText; // Debug Label
-    public Text DistanceText; // Debig Distance
-    public Text labelListText; // Debig labelList
+    //public Text DistanceText; // Debug Distance
+    //public Text labelListText; // Debug labelList
 
     private void Start()
     {
-        labelList = new Dictionary<string, labelNode>();
+        //labelList = new Dictionary<string, LabelNode>();
+
+        // 取得主要的 labelList
+        labelList = LabelMain.Instance.labelList;
+
         labelParent = GameObject.Find("LabelCanvas");
 
         createLabel();
-
-        //label = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //label.transform.rotation = Quaternion.Euler(0, -90f, 0);
-
-        //labelLatitude = 22.6275081f;
-        //labelLongitude = 120.2671676f;
     }
 
     private void Update()
@@ -54,7 +52,7 @@ public class LabelCreate : MonoBehaviour {
         longitude = GPS.Instance.longitude;
         compass = GPS.Instance.compass;
 
-        foreach (KeyValuePair<string, labelNode> labelTemp in labelList)
+        foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
         {
             label = GameObject.Find(labelTemp.Value.labelName);
             labelLatitude = labelTemp.Value.labelLatitude;
@@ -70,15 +68,14 @@ public class LabelCreate : MonoBehaviour {
 
             label.transform.position = new Vector3(labelPositionX, labelPositionY, labelPositionZ);
 
-            // 設定 label 中的 Distance 文字
-            Calc(latitude, longitude, labelLatitude, labelLongitude);
+            // 更新 label 中的 Distance 文字
+            Calc(latitude, longitude, labelLatitude, labelLongitude); // 計算
+
             labelDistanceText = label.transform.Find("Distance").GetComponent<Text>();
-            //labelDistanceText.text = labelDistance.ToString();
-            labelDistanceText.text = label.name;
+            labelDistanceText.text = labelTemp.Value.labelName;
+            labelDistanceText.text += ("\r\n" + labelTemp.Value.labelDistance.ToString("00.00"));
 
             // 調整 label 顯示時面對使用者的角度
-            //label.transform.rotation = Quaternion.Euler(0f, calAngle(), 0f);
-            //label.transform.RotateAround(Camera.main.transform.position, Vector3.up, calAngle());
             Vector3 relativePos = label.transform.position - transform.position;
             Quaternion rotation = Quaternion.LookRotation(relativePos);
             label.transform.rotation = rotation;
@@ -93,8 +90,11 @@ public class LabelCreate : MonoBehaviour {
 
     private void createLabel()
     {
+        // 清空 labelList，重新加入檔案中的 label
+        labelList.Clear();
+
         //string path = Application.dataPath + "/Resources/test.txt";
-        string path = Application.persistentDataPath + "/test.txt";
+        string path = Application.persistentDataPath + "/" + LabelMain.Instance.selectFileName;
 
         // Read the text from directly from the test.txt file
         StreamReader reader = new StreamReader(path);
@@ -134,62 +134,32 @@ public class LabelCreate : MonoBehaviour {
             label.transform.position = new Vector3(labelPositionX, labelPositionY, labelPositionZ);
 
             // 設定 label 中的 distance 文字
-            Calc(latitude, longitude, labelLatitude, labelLongitude);
+            Calc(latitude, longitude, labelLatitude, labelLongitude); // 計算
+
             labelDistanceText = label.transform.Find("Distance").GetComponent<Text>();
             labelDistanceText.transform.localScale = new Vector3(-1 * labelDistanceText.transform.localScale.x, labelDistanceText.transform.localScale.y, labelDistanceText.transform.localScale.z);
-            //labelDistanceText.text = labelDistance.ToString();
             labelDistanceText.text = label.name;
+            labelDistanceText.text += ("\r\n" + labelDistance.ToString());
 
             // 調整 label 顯示時面對使用者的角度
-            label.transform.rotation = Quaternion.Euler(0f, calAngle(), 0f);
+            Vector3 relativePos = label.transform.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(relativePos);
+            label.transform.rotation = rotation;
 
             // 把 label 加入 List 中
-            labelList.Add(label.name, new labelNode(label.name, labelLatitude, labelLongitude, labelDistance));
+            labelList.Add(label.name, new LabelNode(label.name, labelLatitude, labelLongitude, labelDistance));
 
             // Debug Label
             LabelText.text = "labelDistance : " + vectorDistance.ToString() + " ; labelPositionX : " + labelPositionX.ToString() + " ; labelPositionZ : " + labelPositionZ.ToString();
-            labelListText.text += label.name + " : " + labelLatitude + " " + labelLongitude + " " + calAngle() + "\r\n";
             // Debug file data
             Debug.Log(line);
             Debug.Log(labelLatitude);
             Debug.Log(labelLongitude);
             // Debug Label List
             Debug.Log(labelList.Count);
-            // Debug Angle
-            Debug.Log(calAngle());
         }
 
         reader.Close();
-    }
-
-    public float calAngle()
-    {
-        float angle = 0;
-
-        float va_x = labelLongitude - longitude;
-        float va_y = labelLatitude - latitude;
-
-        float vb_x = 0;
-        float vb_y = 1;
-
-        float productValue = (va_x * vb_x) + (va_y * vb_y); // 向量的乘積
-
-        float va_val = Mathf.Sqrt(va_x * va_x + va_y * va_y); // 向量 a 的模
-        float vb_val = Mathf.Sqrt(vb_x * vb_x + vb_y * vb_y); // 向量 b 的模
-        float cosValue = productValue / (va_val * vb_val); // 餘弦公式
-
-
-        // acos的輸入参數範圍必須在[-1, 1]之間，否則會"domain error"
-        // 對輸入参數作校驗和處理
-        if (cosValue < -1 && cosValue > -2)
-            cosValue = -1;
-        else if (cosValue > 1 && cosValue < 2)
-            cosValue = 1;
-
-        // acos返回的是弧度值，轉換为角度值
-        angle = Mathf.Acos(cosValue) * 180 / Mathf.PI;
-
-        return angle;
     }
 
     //calculates distance between two sets of coordinates, taking into account the curvature of the earth.
@@ -206,7 +176,6 @@ public class LabelCreate : MonoBehaviour {
         labelDistance = R * c;
         labelDistance = labelDistance * 1000f; // meters
                                                //set the distance text on the canvas
-        DistanceText.text = "Distance: " + labelDistance;
         //convert distance from double to float
         //float distanceFloat = (float)distance;
         //set the target position of the ufo, this is where we lerp to in the update function

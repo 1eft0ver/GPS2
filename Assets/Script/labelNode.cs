@@ -1,14 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
-public class labelNode
+public class LabelNode
 {
     public string labelName; // label 的名稱
     public float labelLatitude; // label 的緯度
     public float labelLongitude; // label 的經度
     public double labelDistance; // label 跟人的距離
 
-    public labelNode(string labelName, float labelLatitude, float labelLongitude)
+    public LabelNode(string labelName, float labelLatitude, float labelLongitude)
     {
         this.labelName = labelName;
         this.labelLatitude = labelLatitude;
@@ -16,7 +16,7 @@ public class labelNode
         Calc(labelLatitude, labelLongitude, labelLatitude, labelLongitude);
     }
 
-    public labelNode(string labelName, float labelLatitude, float labelLongitude, double labelDistance)
+    public LabelNode(string labelName, float labelLatitude, float labelLongitude, double labelDistance)
     {
         this.labelName = labelName;
         this.labelLatitude = labelLatitude;
