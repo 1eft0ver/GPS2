@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,7 +30,14 @@ public class LabelMain : MonoBehaviour {
 
         labelList = new Dictionary<string, LabelNode>();
 
-        //fileList.option = string.Empty;
+        // 預設檔名，防止使用者沒有出入檔名
+        selectFileName = "temp.txt";
+
+        // 建立暫存檔
+        string path = Application.persistentDataPath + "/" + selectFileName;
+
+        StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8);
+        writer.Close();
 
         fileNameList = new List<string>();
         DirectoryInfo dir = new DirectoryInfo(Application.persistentDataPath);

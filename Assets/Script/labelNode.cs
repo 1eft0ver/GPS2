@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LabelNode
 {
@@ -7,6 +8,11 @@ public class LabelNode
     public float labelLatitude; // label 的緯度
     public float labelLongitude; // label 的經度
     public double labelDistance; // label 跟人的距離
+
+    public Toggle labelToggle; // 指向 Scene 上的 Toggle
+    public bool labelChoose; // True 顯示，False 隱藏
+
+    //public char markerLabel; // Google Static Map 用的標籤
 
     public LabelNode(string labelName, float labelLatitude, float labelLongitude)
     {

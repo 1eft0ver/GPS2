@@ -1,6 +1,14 @@
 # GPS2
 School Project Version 2
 
+# 2017/10/04
+
+* 新增在 SetLabel 中，刪除特定 label 的按鈕
+* SetLabel 中，對應 Google Static Map 的 marker label {A-Z0-9} (**暫時拿掉，還在想表示方法**)
+* LabelChoose 選擇特定的 Label 顯示 (**半成品**，只做完選單，LabelCreate 還沒做)
+	* createLabel function 需要重新寫
+	* Update function 中的應該可以搬過去用
+
 # 2017/10/02
 
 * 新增 UI 中，選擇檔案的 Dropdown

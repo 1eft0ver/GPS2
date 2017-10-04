@@ -12,6 +12,12 @@ public class LabelSetting : MonoBehaviour {
     private float longitude; // 人所在的經度
 
     private Dictionary<string, LabelNode> labelList;
+    private LabelNode label; // 暫存 label
+
+    public GameObject labelTogglePrefab; // labelToggle 模板
+    public GameObject labelToggleParent; // labelToggle 放置的 Canvas
+    private float labelToggleX; // labelToggle 初始位置 X
+    private float labelToggleY; // labelToggle 初始位置 Y
 
     public Text labelLatitudeText;
     public Text labelLongitudeText;
@@ -19,10 +25,32 @@ public class LabelSetting : MonoBehaviour {
 
     private void Start()
     {
-        //labelList = new Dictionary<string, LabelNode>();
-
         // 取得主要的 labelList
         labelList = LabelMain.Instance.labelList;
+
+        // 設定 labelToggle 初始位置
+        labelToggleX = labelTogglePrefab.transform.localPosition.x;
+        labelToggleY = labelTogglePrefab.transform.localPosition.y;
+
+        // 如果 labelList 本來就有東西
+        foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
+        {
+            //Instantiate(labelTemp.Value.labelToggle);
+
+            // 建立 labelToggle 物件, 指派 parent 為 LabelCanvas
+            labelTemp.Value.labelToggle = Instantiate(labelTogglePrefab, labelToggleParent.transform).GetComponent<Toggle>();
+            labelTemp.Value.labelToggle.name = labelTemp.Value.labelName;
+
+            // 調整 labelToggle 的 Y 軸位置
+            labelTemp.Value.labelToggle.transform.localPosition = new Vector2(labelToggleX, labelToggleY);
+            labelToggleY -= 50;
+
+            // 設定 labelToggle 中的文字
+            labelTemp.Value.labelToggle.transform.Find("Label").GetComponent<Text>().text = labelTemp.Value.labelName;
+
+            // 設應 isON
+            labelTemp.Value.labelToggle.isOn = false;
+        }
     }
 
     private void Update()
@@ -33,7 +61,8 @@ public class LabelSetting : MonoBehaviour {
 
         labelLatitudeText.text = "Latitude: " + latitude;
         labelLongitudeText.text = "Longitude: " + longitude;
-
+        
+        /*
         labelListText.text = string.Empty;
 
         char markerLabelCounter = 'A';
@@ -44,6 +73,7 @@ public class LabelSetting : MonoBehaviour {
 
             markerLabelCounter++;
         }
+        */
     }
 
     public void setLabel(Text LabelName)
@@ -56,11 +86,27 @@ public class LabelSetting : MonoBehaviour {
             Debug.Log("Please Input Text");
             return;
         }
-
-        // 把 label 加入 List 中
-        if(!labelList.ContainsKey(LabelName.text))
+        if (!labelList.ContainsKey(LabelName.text))
         {
-            labelList.Add(LabelName.text, new LabelNode(LabelName.text, latitude, longitude));
+            // 建立 label 和 labelToggle
+            label = new LabelNode(LabelName.text, latitude, longitude);
+
+            // 建立 labelToggle 物件, 指派 parent 為 LabelCanvas
+            label.labelToggle = Instantiate(labelTogglePrefab, labelToggleParent.transform).GetComponent<Toggle>();
+            label.labelToggle.name = label.labelName;
+
+            // 調整 labelToggle 的 Y 軸位置
+            label.labelToggle.transform.localPosition = new Vector2(labelToggleX, labelToggleY);
+            labelToggleY -= 50;
+
+            // 設定 labelToggle 中的文字
+            label.labelToggle.transform.Find("Label").GetComponent<Text>().text = label.labelName;
+
+            // 設應 isON
+            label.labelToggle.isOn = false;
+
+            // 把 label 加入 List 中
+            labelList.Add(LabelName.text, label);
         }
     }
 
@@ -80,14 +126,57 @@ public class LabelSetting : MonoBehaviour {
 
     public void deleteLabel(string buttonName)
     {
-        GameObject tempButton;
-        tempButton = GameObject.Find(buttonName);
+        List<string> deleteKey = new List<string>();
 
-        Destroy(tempButton);
+        // 選出要被刪除的 label，利用 Toggle isON 判斷，並刪除所有的 labelToggle
+        foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
+        {
+            Destroy(GameObject.Find(labelTemp.Value.labelName));
+
+            if (labelTemp.Value.labelToggle.isOn)
+            {
+                deleteKey.Add(labelTemp.Key);
+            }
+        }
+
+        // 從 labelList 中刪除 label
+        foreach (string keyTemp in deleteKey)
+        {
+            labelList.Remove(keyTemp);
+        }
+
+        // 設定 labelToggle 初始位置
+        labelToggleX = labelTogglePrefab.transform.localPosition.x;
+        labelToggleY = labelTogglePrefab.transform.localPosition.y;
+
+        // 重新建立 labelToggle
+        foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
+        {
+            // 建立 labelToggle 物件, 指派 parent 為 LabelCanvas
+            labelTemp.Value.labelToggle = Instantiate(labelTogglePrefab, labelToggleParent.transform).GetComponent<Toggle>();
+            labelTemp.Value.labelToggle.name = labelTemp.Value.labelName;
+
+            // 調整 labelToggle 的 Y 軸位置
+            labelTemp.Value.labelToggle.transform.localPosition = new Vector2(labelToggleX, labelToggleY);
+            labelToggleY -= 50;
+
+            // 設定 labelToggle 中的文字
+            labelTemp.Value.labelToggle.transform.Find("Label").GetComponent<Text>().text = labelTemp.Value.labelName;
+
+            // 設應 isON
+            labelTemp.Value.labelToggle.isOn = false;
+        }
     }
 
     public void clearMap()
-    {
+    {   
+        // 刪除所有的 labelToggle 並清空 labelList
+        foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
+        {
+            Destroy(labelTemp.Value.labelToggle);
+            Destroy(GameObject.Find(labelTemp.Value.labelName));
+        }
+
         labelList.Clear();
     }
 }

@@ -19,7 +19,7 @@ public class GoogleStaticMaps : MonoBehaviour {
     {
         labelList = LabelMain.Instance.labelList;
 
-        char markerLabelCounter = 'A';
+        /*char markerLabelCounter = 'A';
 
         markers = new List<GoogleMapMarker>();
 
@@ -30,6 +30,15 @@ public class GoogleStaticMaps : MonoBehaviour {
             markers.Add(tempMarker);
 
             markerLabelCounter++;
+        }*/
+
+        markers = new List<GoogleMapMarker>();
+
+        foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
+        {
+            GoogleMapMarker tempMarker =
+                new GoogleMapMarker("mid", "blue", "", new GoogleMapLocation(labelTemp.Value.labelLatitude, labelTemp.Value.labelLongitude));
+            markers.Add(tempMarker);
         }
 
         StartCoroutine(GetGoogleMap());

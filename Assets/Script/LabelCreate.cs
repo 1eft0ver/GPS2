@@ -12,7 +12,7 @@ public class LabelCreate : MonoBehaviour {
 
     private float latitude; // 人所在的緯度
     private float longitude; // 人所在的經度
-    private float compass; // 跟北方的角度
+    //private float compass; // 跟北方的角度
 
     private float vectorDistance; // label 向量計算用的距離
     private float labelLatitude; // label 的緯度
@@ -50,7 +50,7 @@ public class LabelCreate : MonoBehaviour {
         // 取得使用者的經緯度
         latitude = GPS.Instance.latitude;
         longitude = GPS.Instance.longitude;
-        compass = GPS.Instance.compass;
+        //compass = GPS.Instance.compass;
 
         foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
         {
@@ -121,7 +121,7 @@ public class LabelCreate : MonoBehaviour {
             // 取得使用者的經緯度
             latitude = GPS.Instance.latitude;
             longitude = GPS.Instance.longitude;
-            compass = GPS.Instance.compass;
+            //compass = GPS.Instance.compass;
 
             // 計算向量長度
             vectorDistance = Mathf.Sqrt(Mathf.Pow(labelLatitude - latitude, 2) + Mathf.Pow(labelLongitude - longitude, 2));

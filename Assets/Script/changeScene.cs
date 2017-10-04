@@ -5,37 +5,55 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour {
 
+    // 從 UI Scene 跳到 AR Scene
     public void uiToAR()
     {
-        Debug.Log("Click Button");
-        SceneManager.LoadScene("AR");
+        if (LabelMain.Instance.selectFileName != string.Empty)
+        {
+            Debug.Log("To AR Button");
+            SceneManager.LoadScene("AR");
+        }
     }
 
     // 從 AR Scene 跳到 SetLabel Scene
     public void arToSetLabel()
     {
-        Debug.Log("Click Button");
+        Debug.Log("To SetLabel Button");
         SceneManager.LoadScene("SetLabel");
     }
 
     // 從 SetLabel Scene 跳到 AR Scene
     public void setLabelToAR()
     {
-        Debug.Log("Click Button");
+        Debug.Log("To AR Button");
         SceneManager.LoadScene("AR");
     }
 
     // 從 SetLabel Scene 跳到 Map Scene
     public void setLabelToMap()
     {
-        Debug.Log("Click Button");
+        Debug.Log("To Map Button");
         SceneManager.LoadScene("GoogleMap");
     }
 
     // 從 SetLabel Scene 跳到 Map Scene
     public void mapToSetLabel()
     {
-        Debug.Log("Click Button");
+        Debug.Log("To SetLabel Button");
         SceneManager.LoadScene("SetLabel");
+    }
+
+    // 從 AR Scene 跳到 ChooseLabel Scene
+    public void arToChooseLabel()
+    {
+        Debug.Log("To ChooseLabel Button");
+        SceneManager.LoadScene("ChooseLabel");
+    }
+
+    // 從 ChooseLabel Scene 跳到 AR Scene
+    public void chooseLabelToAR()
+    {
+        Debug.Log("To AR Button");
+        SceneManager.LoadScene("AR");
     }
 }
