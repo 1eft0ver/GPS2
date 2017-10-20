@@ -47,11 +47,11 @@ public class LabelChoose : MonoBehaviour {
 
     }
 
-    public void setlabelChoose()
+    /*public void setlabelChoose()
     {
         foreach (KeyValuePair<string, LabelNode> labelTemp in labelList)
         {
             labelTemp.labelChoose = labelTemp.Value.labelToggle.isOn;
         }
-    }
+    }*/
 }
